@@ -1,16 +1,18 @@
 /**
+  * The Life class contains the the replication mechanism
+  * encoded according to the rules of the Game of Life
   *
-  *
-  *
-  *
+  * As parameters it takes in the sizes of the two spatial dimensions and
+  * a set containing the two dimensional coordinates of each living cell
   *
   * Author : Haider Riaz Khan
   */
+
 case class Life(liveCells : Set[(Int,Int)] , xLimit : Int , yLimit : Int) {
 
   private val neighbourOffsets = Set (
 
-      (-1,-1), (0, -1) , (0, 1),
+      (-1,-1), (0, -1) , (1, -1),
       (-1, 0)          , (1, 0),
       (-1, 1), (0 , 1) , (1 , 1)
 
@@ -30,7 +32,7 @@ case class Life(liveCells : Set[(Int,Int)] , xLimit : Int , yLimit : Int) {
 
   }
 
-  private def isLive(cell : (Int, Int)) : Boolean = {
+  def isLive(cell : (Int, Int)) : Boolean = {
 
     liveCells.contains(cell)
 
@@ -43,11 +45,10 @@ case class Life(liveCells : Set[(Int,Int)] , xLimit : Int , yLimit : Int) {
   }
 
 
-  def nextGen() : Life = {
+  def nextGen : Life = {
 
-    val nextGenLiveCells = liveCells.flatMap(neighbours).union(liveCells)
 
-    nextGenLiveCells.filter(cell => {
+    val nextGenLiveCells = liveCells.flatMap(neighbours).union(liveCells).filter(cell => {
 
       neighbours(cell).count(isLive) match {
 
@@ -58,7 +59,6 @@ case class Life(liveCells : Set[(Int,Int)] , xLimit : Int , yLimit : Int) {
       }
 
     } )
-
 
 
     Life(nextGenLiveCells , xLimit , yLimit)
