@@ -9,8 +9,8 @@ object PrintGameOfLife {
 
   def printGame(life : Life): String = {
 
-    (0 to life.yLimit).map(row =>
-      (0 to life.xLimit).map(column => if (life.isLive((row, column))) living else dead).mkString
+    (0 to (life.yLimit-1)).map(row =>
+      (0 to (life.xLimit-1)).map(column => if (life.isLive((column, row))) living else dead).mkString
     ).mkString("\n")
 
   }
