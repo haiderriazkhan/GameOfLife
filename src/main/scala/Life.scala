@@ -1,12 +1,17 @@
 /**
+  *
+  *
+  *
+  *
+  *
   * Author : Haider Riaz Khan
   */
-class Life(liveCells : Set[(Int,Int)] , xLimit : Int , yLimit : Int) {
+case class Life(liveCells : Set[(Int,Int)] , xLimit : Int , yLimit : Int) {
 
   private val neighbourOffsets = Set (
 
-      (-1,-1) , (0, -1) , (0, 1),
-      (-1, 0)           , (1, 0),
+      (-1,-1), (0, -1) , (0, 1),
+      (-1, 0)          , (1, 0),
       (-1, 1), (0 , 1) , (1 , 1)
 
   )
@@ -25,15 +30,38 @@ class Life(liveCells : Set[(Int,Int)] , xLimit : Int , yLimit : Int) {
 
   }
 
-  def isLive(cell : (Int, Int)) : Boolean = {
+  private def isLive(cell : (Int, Int)) : Boolean = {
 
     liveCells.contains(cell)
 
   }
 
+  def hasLiveCells : Boolean  = {
+
+    liveCells.nonEmpty
+
+  }
+
+
   def nextGen() : Life = {
 
-    val potentialLiveCells = liveCells.flatMap(neighbours).union(liveCells)
+    val nextGenLiveCells = liveCells.flatMap(neighbours).union(liveCells)
+
+    nextGenLiveCells.filter(cell => {
+
+      neighbours(cell).count(isLive) match {
+
+        case 2 => isLive(cell)
+        case 3 => true
+        case _ => false
+
+      }
+
+    } )
+
+
+
+    Life(nextGenLiveCells , xLimit , yLimit)
 
 
   }
